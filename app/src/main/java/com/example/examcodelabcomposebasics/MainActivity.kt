@@ -4,14 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.examcodelabcomposebasics.ui.theme.ExamCodelabComposeBasicsTheme
-import com.example.examcodelabcomposebasics.ui.theme.PaddingMedium
-import com.example.examcodelabcomposebasics.ui.theme.PaddingSmall
+import com.example.examcodelabcomposebasics.ui.theme.*
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,21 +46,32 @@ fun MyApp(
 
 @Composable
 fun Greeting(name: String) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val extraPadding = if (expanded) PaddingExtra else PaddingNone
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(PaddingSmall)
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(PaddingMedium)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(PaddingMedium)
+        ) {
 
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = extraPadding)
+            ) {
                 Text(text = "Hello, ")
                 Text(text = "$name!")
             }
 
-            OutlinedButton(onClick = {  }) {
-                Text(stringResource(id = R.string.show_more))
+            OutlinedButton(onClick = { expanded = !expanded }) {
+                Text(
+                    if (expanded) stringResource(id = R.string.show_less)
+                    else stringResource(id = R.string.show_more)
+                )
             }
         }
     }
