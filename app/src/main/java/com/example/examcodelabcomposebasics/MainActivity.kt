@@ -3,16 +3,15 @@ package com.example.examcodelabcomposebasics
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.examcodelabcomposebasics.ui.theme.ExamCodelabComposeBasicsTheme
 import com.example.examcodelabcomposebasics.ui.theme.PaddingMedium
+import com.example.examcodelabcomposebasics.ui.theme.PaddingSmall
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,23 +25,42 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colors.background
+fun MyApp(
+    modifier: Modifier = Modifier,
+    names: List<String> = listOf("Android", "Compose"),
+) {
+    Column(
+        modifier = modifier.padding(PaddingSmall)
     ) {
-        Greeting("Android")
+        for (name in names) {
+            Greeting(name)
+        }
     }
 }
 
 @Composable
 fun Greeting(name: String) {
-    Surface(color = MaterialTheme.colors.primary) {
-        Text(text = "Hello $name!", modifier = Modifier.padding(PaddingMedium))
+    Surface(
+        color = MaterialTheme.colors.primary,
+        modifier = Modifier.padding(PaddingSmall)
+    ) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(PaddingMedium)) {
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = "Hello, ")
+                Text(text = "$name!")
+            }
+
+            OutlinedButton(onClick = {  }) {
+                Text(stringResource(id = R.string.show_more))
+            }
+        }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 320)
 @Composable
 fun DefaultPreview() {
     ExamCodelabComposeBasicsTheme {
