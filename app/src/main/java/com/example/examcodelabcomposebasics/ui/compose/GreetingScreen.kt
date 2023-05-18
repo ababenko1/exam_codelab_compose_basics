@@ -1,5 +1,6 @@
 package com.example.examcodelabcomposebasics.ui.compose
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -20,8 +21,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.examcodelabcomposebasics.MyApp
 import com.example.examcodelabcomposebasics.R
 import com.example.examcodelabcomposebasics.ui.theme.*
 
@@ -65,7 +66,11 @@ fun Greeting(name: String) {
                     .padding(bottom = extraPadding.coerceAtLeast(PaddingNone))
             ) {
                 Text(text = "Hello, ")
-                Text(text = "$name!")
+                Text(
+                    text = "$name",
+                    style = MaterialTheme.typography.h5
+                        .copy(fontWeight = FontWeight.ExtraBold)
+                )
             }
 
             OutlinedButton(onClick = { expanded = !expanded }) {
@@ -78,10 +83,27 @@ fun Greeting(name: String) {
     }
 }
 
-@Preview(showBackground = true, widthDp = 320)
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 320
+)
 @Composable
 fun GreetingScreenPreview() {
     ExamCodelabComposeBasicsTheme {
-        MyApp()
+        GreetingScreen()
+    }
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES,
+    widthDp = 320,
+    heightDp = 320
+)
+@Composable
+fun GreetingScreenDarkPreview() {
+    ExamCodelabComposeBasicsTheme {
+        GreetingScreen()
     }
 }
