@@ -1,9 +1,14 @@
 package com.example.examcodelabcomposebasics.ui.compose
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
@@ -23,12 +28,12 @@ import com.example.examcodelabcomposebasics.ui.theme.*
 @Composable
 fun GreetingScreen(
     modifier: Modifier = Modifier,
-    names: List<String> = listOf("Android", "Compose"),
+    names: List<String> = List(1000) { "$it" },
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier.padding(PaddingSmall)
     ) {
-        for (name in names) {
+        items(names) { name ->
             Greeting(name)
         }
     }
@@ -37,7 +42,13 @@ fun GreetingScreen(
 @Composable
 fun Greeting(name: String) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val extraPadding = if (expanded) PaddingExtra else PaddingNone
+    val extraPadding by animateDpAsState(
+        targetValue = if (expanded) PaddingExtra else PaddingNone,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(PaddingSmall)
@@ -51,7 +62,7 @@ fun Greeting(name: String) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = extraPadding)
+                    .padding(bottom = extraPadding.coerceAtLeast(PaddingNone))
             ) {
                 Text(text = "Hello, ")
                 Text(text = "$name!")
