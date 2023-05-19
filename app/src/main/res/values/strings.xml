@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">ExamCodelabComposeBasics</string>
-    <string name="show_more">Show more</string>
-    <string name="show_less">Show less</string>
     <string name="welcome_to_basics_codelab">Welcome to the Basics Codelab!</string>
     <string name="continue_button">Continue</string>
 </resources>

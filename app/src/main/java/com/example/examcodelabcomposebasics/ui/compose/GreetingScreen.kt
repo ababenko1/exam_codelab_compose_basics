@@ -1,8 +1,8 @@
 package com.example.examcodelabcomposebasics.ui.compose
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,21 +10,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.examcodelabcomposebasics.R
-import com.example.examcodelabcomposebasics.ui.theme.*
+import com.example.examcodelabcomposebasics.ui.theme.ExamCodelabComposeBasicsTheme
+import com.example.examcodelabcomposebasics.ui.theme.PaddingMedium
+import com.example.examcodelabcomposebasics.ui.theme.PaddingSmall
 
 @Composable
 fun GreetingScreen(
@@ -43,40 +43,46 @@ fun GreetingScreen(
 @Composable
 fun Greeting(name: String) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val extraPadding by animateDpAsState(
-        targetValue = if (expanded) PaddingExtra else PaddingNone,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        )
-    )
+
     Surface(
         color = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(PaddingSmall)
+        modifier = Modifier.padding(PaddingSmall),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(PaddingMedium)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                )
         ) {
 
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = extraPadding.coerceAtLeast(PaddingNone))
             ) {
                 Text(text = "Hello, ")
                 Text(
-                    text = "$name",
+                    text = name,
                     style = MaterialTheme.typography.h5
                         .copy(fontWeight = FontWeight.ExtraBold)
                 )
+                if (expanded) {
+                    Text(
+                        "Composem ipsum color sit lazy, " +
+                                "padding theme elit, sed do bouncy. ".repeat(4)
+                    )
+                }
             }
 
-            OutlinedButton(onClick = { expanded = !expanded }) {
-                Text(
-                    if (expanded) stringResource(id = R.string.show_less)
-                    else stringResource(id = R.string.show_more)
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp
+                    else Icons.Filled.KeyboardArrowDown,
+                    contentDescription = null
                 )
             }
         }
